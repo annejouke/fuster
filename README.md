@@ -29,18 +29,18 @@ For Linux:
 - [x] See if Github Actions can be used to build this for Windows, Linux and macOS
 - [x] Extend the `README.md` with a shell script example on how to install this to the PATH
 - [ ] Include Linux and Windows install instructions
-- [ ] `fus project standardize` command to set your project formatting defaults as set by your `~/.fus/config.toml` and `~/.fus/standards/**/*` settings
+- [ ] `fus init` command to set your project formatting defaults as set by your `~/.fus/config.toml` and `~/.fus/init/**/*` settings
 
 ### Project Standardise
 
 > WIP!
 
-Some features of `fus project standardize`:
+Some features of `fus init`:
 - It'll check the contents of the folder and sub directories for the known culprits such as `package.json` `cargo.toml` and `go.mod` to decide the project type
-- On finding it, it'll initialise the project with the standardised settings as set in `~/.fus/config.toml` and `~/.fus/standards/**/*`
+- On finding it, it'll initialise the project with the standardised settings as set in `~/.fus/config.toml` and `~/.fus/init/**/*`
 - Based on this information it'll copy the appropriate `.gitignore` to the project root
-- It'll take all files in the root of the `~/.fus/standards/default/**/*` folder and copy them to the project root
-- It'll merge/override all files in the specific project's flavor folder `~/.fus/standards/<project_type>/**/*` to the project root: Types and names to be determined
+- It'll take all files in the root of the `~/.fus/init/default/**/*` folder and copy them to the project root
+- It'll merge/override all files in the specific project's flavor folder `~/.fus/init/<project_type>/**/*` to the project root: Types and names to be determined
 
 ## About
 

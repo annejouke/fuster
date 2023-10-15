@@ -1,4 +1,8 @@
+use clap::Parser;
 use cli_clipboard::{ClipboardContext, ClipboardProvider};
+
+#[derive(Parser, Debug)]
+pub struct Rocket;
 
 pub fn run() {
     let contents = "🚀 initial commit";

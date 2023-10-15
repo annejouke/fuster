@@ -11,17 +11,18 @@ struct Args {
 
 #[derive(Parser, Debug)]
 enum SubCommand {
-    #[command(about = "Copies \"🚀 initial commit\" to the clipboard.")]
-    Rocket(Rocket),
-}
+    #[command(about = "Initializes the project with the config in ~/.fus/init")]
+    Init(command::init::Init),
 
-#[derive(Parser, Debug)]
-struct Rocket;
+    #[command(about = "Copies \"🚀 initial commit\" to the clipboard.")]
+    Rocket(command::rocket::Rocket),
+}
 
 fn main() {
     let args = Args::parse();
 
     match args.sub_command {
+        SubCommand::Init(_) => command::init::run(),
         SubCommand::Rocket(_) => command::rocket::run(),
     }
 }
