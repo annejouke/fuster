@@ -60,6 +60,7 @@ jobs:
       - name: "Compile Rust Triple"
         id: compile_rust_triple
         uses: rust-build/rust-build.action@v1.4.3
+        if: steps.compare_cargo_version_to_latest_tag.outputs.should_create_tag == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -69,6 +70,7 @@ jobs:
   
       - name: "Upload Binaries To Release"
         uses: svenstaro/upload-release-action@v2
+        if: steps.compare_cargo_version_to_latest_tag.outputs.should_create_tag == 'true'
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ steps.compile_rust_triple.outputs.BUILT_ARCHIVE }}
