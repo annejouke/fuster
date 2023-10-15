@@ -11,7 +11,7 @@ struct Args {
 
 #[derive(Parser, Debug)]
 enum SubCommand {
-    #[command(about = "Prints the mandatory '🚀 initial commit' for every initial commit.")]
+    #[command(about = "Copies \"🚀 initial commit\" to the clipboard.")]
     Rocket(Rocket),
 }
 

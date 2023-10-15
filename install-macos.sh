@@ -1,6 +1,6 @@
 #!/bin/sh
 
-curl -LO https://github.com/annejouke/fuster/releases/download/v0.1.0/macos.zip
+curl -LO $(curl -s https://api.github.com/repos/annejouke/fuster/releases/latest | grep 'browser_' | grep macos.zip | sed 's/"browser_download_url": "\(.*\)"/\1/')
 
 unzip macos.zip
 
