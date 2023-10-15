@@ -1,0 +1,76 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag_and_release:
+    name: Release ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-pc-windows-gnu
+            archive: zip
+            name: "windows"
+          - target: x86_64-unknown-linux-musl
+            archive: tar.gz
+            name: "linux"
+          - target: x86_64-apple-darwin
+            archive: zip
+            name: "macos"
+
+    steps:
+      - name: "Checkout Code"
+        uses: actions/checkout@v2
+
+      - name: "Get Cargo Version"
+        uses: thebongy/version-check@v1
+        id: get_cargo_version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: Cargo.toml
+          tagFormat: v${version}
+
+      - name: "Get Latest Tag"
+        id: get_latest_tag
+        uses: actions-ecosystem/action-get-latest-tag@v1
+
+      - name: "Compare Cargo Version To Latest Tag"
+        id: compare_cargo_version_to_latest_tag
+        run: |
+          get_cargo_version=${{ steps.get_cargo_version.outputs.releaseVersion }}
+          get_latest_tag=${{ steps.get_latest_tag.outputs.tag }}
+          if [[ $get_cargo_version > $get_latest_tag ]]; then # use string comparison to compare versions
+            echo "::set-output name=should_create_tag::true"
+          else
+            echo "::set-output name=should_create_tag::false"
+          fi
+
+      - name: "Push New Tag"
+        id: push_new_tag
+        uses: actions-ecosystem/action-push-tag@v1
+        if: steps.compare_cargo_version_to_latest_tag.outputs.should_create_tag == 'true'
+        with:
+          tag: ${{ steps.get_cargo_version.outputs.releaseVersion }}
+          message: Release ${{ steps.get_cargo_version.outputs.releaseVersion }}
+
+      - name: "Compile Rust Triple"
+        id: compile_rust_triple
+        uses: rust-build/rust-build.action@v1.4.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          ARCHIVE_TYPES: ${{ matrix.archive }}
+          RUSTTARGET: ${{ matrix.target }}
+          TOOLCHAIN_VERSION: "1.73.0"
+  
+      - name: "Upload Binaries To Release"
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ steps.compile_rust_triple.outputs.BUILT_ARCHIVE }}
+          asset_name: ${{ matrix.name }}.${{ matrix.archive }}
+          tag: ${{ steps.get_cargo_version.outputs.releaseVersion }}

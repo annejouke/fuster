@@ -2,13 +2,28 @@
 
 A personal assistant to keep the hen house in order
 
+## Installation
+
+For Windows:
+
+```<todo>```
+
+For macOS:
+
+```curl https://github.com/annejouke/fuster/blob/main/install-macos.sh | sh```
+
+For Linux:
+
+```<todo>```
+
 ## Features
 
 To do
 
-- [] `fus rocket` command to push the vital "🚀 initial commit" to the clipboard (humble beginnings...)
-- [] See if Github Actions can be used to build this for Windows, Linux and macOS
-- [] Extend the `README.md` with a shell script example on how to install this to the PATH
+- [x] `fus rocket` command to push the vital "🚀 initial commit" to the clipboard (humble beginnings...)
+- [x] See if Github Actions can be used to build this for Windows, Linux and macOS
+- [x] Extend the `README.md` with a shell script example on how to install this to the PATH
+- [] Include Linux and Windows install instructions
 - [] `fus project standardize` command to set your project formatting defaults as set by your `~/.fus/config.toml` and `~/.fus/standards/**/*` settings
 
 ## Project Standardise
